@@ -48,10 +48,11 @@ def read_openpose_features(video_name, openpose_output_path, output_path):
     """Extract video level feature."""
     video_json_src = "{}/{}".format(openpose_output_path, video_name)
     print(video_json_src)
-    allImagePaths = glob.glob("{src}/*".format(src=video_json_src))
-    allImagePaths.sort(key=lambda x: int(x.split("_")[-2].split(".")[0]))
-    print(len(allImagePaths))
-    per_frame_feat = [*map(read_useful_feature, allImagePaths)]
+    allimagepaths = glob.glob("{src}/*".format(src=video_json_src))
+    allimagepaths.sort(key=lambda x: int(x.split("_")[-2].split(".")[0]))
+    print(len(allimagepaths))
+    allimagepaths = allimagepaths[conf.START_FRAME:conf.END_FRAME]
+    per_frame_feat = [*map(read_useful_feature, allimagepaths)]
     per_frame_feat = list(filter(None, per_frame_feat))
     per_frame_feat = pd.DataFrame(
         per_frame_feat, columns=op_conf.COCO_ANNOTATION)
