@@ -7,6 +7,7 @@ import pandas as pd
 from settings import conf
 from processing.load_data import load_action_units_x, load_facial_attributes_x,\
     load_body_keypoints_x
+from processing.utils import save_output
 from train import train_regressor, load_model, evaluate_model, \
     average_ensemble, wtd_average_ensemble
 
@@ -75,3 +76,35 @@ if __name__ == "__main__":
         mse_wtd, pcc_wtd = evaluate_model(
             wtd_average_pred, val_engagement_value)
         print("Wtd Avg Ensemble: MSE = {}, PCC = {}".format(mse_wtd, pcc_wtd))
+
+    if conf.TEST_RESULTS is True:
+        test_data = pd.read_csv(conf.TEST_DATA, delimiter=',')
+
+        print("Generating test results")
+
+        test_x_openface_au = load_action_units_x(test_data, "test")
+        print("Loaded test FAU features")
+        test_x_openface_face = load_facial_attributes_x(test_data, "test")
+        print("Loaded test FA features")
+        test_x_openpose = load_body_keypoints_x(test_data, "test")
+        print("Loaded test BL features")
+
+        au_model = load_model(conf.MODEL_AU_NAME)
+        face_model = load_model(conf.MODEL_FACE_NAME)
+        bodylandmark_model = load_model(conf.MODEL_BL_NAME)
+        print("Loaded models")
+
+        pred_au = au_model.predict(test_x_openface_au)
+        pred_face = face_model.predict(test_x_openface_face)
+        pred_bl = bodylandmark_model.predict(test_x_openpose)
+
+        average_pred = average_ensemble(pred_au, pred_face, pred_bl)
+        wtd_average_pred = wtd_average_ensemble(pred_au, pred_face, pred_bl)
+
+        save_output("{}/avg/".format(conf.TEST_OUTPUT_PATH),
+                    test_data.video_name, average_pred)
+        print("Saved average ensemble output")
+
+        save_output("{}/wtd_avg/".format(conf.TEST_OUTPUT_PATH),
+                    test_data.video_name, wtd_average_pred)
+        print("Saved wtd average ensemble output")

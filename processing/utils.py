@@ -31,3 +31,16 @@ def get_levelwise_mse(pred, trueval):
         data.append(
             round(metrics.mean_squared_error(level_wise_feat["pred"], level_wise_feat["orig"]), 4))
     return data
+
+
+def save_output(path, video_name_df, pred):
+    """Save test predictions."""
+    output_df = pd.DataFrame([video_name_df, pred]).T
+    output_df.columns = ['A', 'B']
+    output_df.apply(lambda row: write_file(
+        path, row['A'], row['B']), axis=1)
+
+
+def write_file(path, video_name, engagement_pred):
+    with open("{}/{}.txt".format(path, video_name), "w+") as outfile:
+        outfile.write(str(engagement_pred))
