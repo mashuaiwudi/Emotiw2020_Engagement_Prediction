@@ -12,10 +12,10 @@ from train import train_regressor, load_model, evaluate_model, \
 
 
 if __name__ == "__main__":
-    train_data = pd.read_csv(conf.TRAIN_DATA, delimiter=',')
-    val_data = pd.read_csv(conf.VAL_DATA, delimiter=',')
 
     if conf.TRAIN_MODELS is True:
+        train_data = pd.read_csv(conf.TRAIN_DATA, delimiter=',')
+        print("Training models")
         # Train FAU model
         train_engagement_value = train_data.attention
 
@@ -34,7 +34,10 @@ if __name__ == "__main__":
                         train_engagement_value, conf.MODEL_BL_NAME)
 
     if conf.VAL_RESULTS is True:
+        val_data = pd.read_csv(conf.VAL_DATA, delimiter=',')
         val_engagement_value = val_data.attention
+
+        print("Validating models")
 
         val_x_openface_au = load_action_units_x(val_data, "val")
         val_x_openface_face = load_facial_attributes_x(val_data, "val")

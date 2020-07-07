@@ -59,7 +59,7 @@ def wtd_average_ensemble(pred_au, pred_face, pred_bl):
 def evaluate_model(pred_y, true_y):
     """Returns mean squared error."""
     mse = round(
-        metrics.mean_absolute_error(pred_y, true_y), 4)
+        metrics.mean_squared_error(pred_y, true_y), 4)
     print("MSE: ", mse)
 
     return mse

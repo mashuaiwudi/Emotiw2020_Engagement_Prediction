@@ -45,7 +45,7 @@ OPENFACE_MODALITY_FACE = of_conf.PDM_HEADER_NONRIGID + \
     of_conf.GAZE_HEADER + of_conf.HEAD_POSE_HEADER
 OPENPOSE_MODALITY = op_conf.USEFUL_ANNOTATIONS
 
-MODEL_PATH = "model_1"
-MODEL_AU_NAME = "model_FAU_balanced.sav"
-MODEL_FACE_NAME = "model_FA_balanced.sav"
-MODEL_BL_NAME = "model_BL_balanced.sav"
+MODEL_PATH = "model_2"
+MODEL_AU_NAME = "model_FAU_original.sav"
+MODEL_FACE_NAME = "model_FA_original.sav"
+MODEL_BL_NAME = "model_BL_original.sav"
