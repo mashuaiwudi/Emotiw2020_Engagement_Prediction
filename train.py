@@ -1,67 +1,44 @@
 """
-Train models.
+Main run file.
 """
 
-import joblib
-import numpy as np
-
-from sklearn.ensemble import RandomForestRegressor
+import pandas as pd
+import argparse
 from settings import conf
-from sklearn import metrics
-from scipy.stats import pearsonr
+from load_data import load_action_units_x, load_facial_attributes_x,\
+    load_body_keypoints_x
+from utils import train_regressor
 
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Process OpenPose output.')
 
-def load_model(model_name, model_path=conf.MODEL_PATH):
-    """Loads model from desired path."""
-    path = "{}/{}".format(model_path, model_name)
-    return joblib.load(path)
+    parser.add_argument('--model_output_path', required=True,
+                        help='Path of folder containing models.')
 
+    args = parser.parse_args()
+    model_path = args.model_output_path
 
-def save_model(model, model_name, model_path=conf.MODEL_PATH):
-    """Save model to desired path."""
-    path = "{}/{}".format(model_path, model_name)
-    joblib.dump(model, path)
+    train_data = pd.read_csv(conf.TRAIN_DATA, delimiter=',')
+    print("Training models")
+    # Train FAU model
+    train_engagement_value = train_data.attention
 
+    train_x_openface_au = load_action_units_x(train_data, "train")
+    print("Loaded FAU features")
+    train_regressor(train_x_openface_au,
+                    train_engagement_value, conf.MODEL_AU_NAME, model_path)
+    print("Trained FAU model")
 
-def train_regressor(train_x, train_y, model_name, n_trees=200, random_state=50):
-    """Train model."""
-    rf_regressor = RandomForestRegressor(
-        n_estimators=n_trees,
-        random_state=random_state
-    )
-    rf_regressor.fit(train_x, train_y)
-    save_model(rf_regressor, model_name, conf.MODEL_PATH)
+    # Train FA model
+    train_x_openface_face = load_facial_attributes_x(train_data, "train")
+    print("Loaded FA features")
+    train_regressor(train_x_openface_face,
+                    train_engagement_value, conf.MODEL_FACE_NAME, model_path)
+    print("Trained FA model")
 
-
-def average_ensemble(pred_au, pred_face, pred_bl):
-    """Calculated average prediction of three models."""
-    video_count = pred_au.shape[0]
-    ensemble_data = np.zeros((video_count, 3))
-    ensemble_data[:, 0] = pred_au
-    ensemble_data[:, 1] = pred_face
-    ensemble_data[:, 2] = pred_bl
-
-    avg_pred = np.average(ensemble_data, axis=1)
-    return avg_pred
-
-
-def wtd_average_ensemble(pred_au, pred_face, pred_bl):
-    """Calculated weighted prediction of three models."""
-    total_wts = (conf.FAU_WEIGHT + conf.FA_WEIGHT + conf.BL_WEIGHT)
-    fau_wt = conf.FAU_WEIGHT / total_wts
-    fa_wt = conf.FA_WEIGHT / total_wts
-    bl_wt = conf.BL_WEIGHT / total_wts
-
-    wtd_pred = (pred_au * fau_wt) + (pred_face * fa_wt) + (pred_bl * bl_wt)
-
-    return wtd_pred
-
-
-def evaluate_model(pred_y, true_y):
-    """Returns mean squared error."""
-    mse = round(
-        metrics.mean_squared_error(pred_y, true_y), 4)
-
-    pcc = round(pearsonr(pred_y, true_y)[0], 2)
-
-    return mse, pcc
+    # Train BL model
+    train_x_openpose = load_body_keypoints_x(train_data, "train")
+    print("Loaded BL features")
+    train_regressor(train_x_openpose,
+                    train_engagement_value, conf.MODEL_BL_NAME, model_path)
+    print("Trained BL model")

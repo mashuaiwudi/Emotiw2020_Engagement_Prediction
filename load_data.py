@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from settings import conf
-from processing import utils
+import utils
 
 
 def read_openface_features(video_name, data_type, required_feat):
