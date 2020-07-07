@@ -8,6 +8,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from settings import conf
 from sklearn import metrics
+from scipy.stats import pearsonr
 
 
 def load_model(model_name, model_path=conf.MODEL_PATH):
@@ -60,6 +61,7 @@ def evaluate_model(pred_y, true_y):
     """Returns mean squared error."""
     mse = round(
         metrics.mean_squared_error(pred_y, true_y), 4)
-    print("MSE: ", mse)
 
-    return mse
+    pcc = round(pearsonr(pred_y, true_y)[0], 2)
+
+    return mse, pcc
