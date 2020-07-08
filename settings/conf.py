@@ -11,16 +11,19 @@ VAL_RESULTS = False
 TEST_RESULTS = True
 
 TRAIN_DATA = "settings/train_files.csv"
+TRAIN_DATA_MERGED = "settings/train_files_mergebalanced.csv"
 TEST_DATA = "settings/test_files.csv"
 VAL_DATA = "settings/val_files.csv"
 
 OPENPOSE_PATH = {
     "train":  "openpose_features/train",
+    "merged":  "openpose_features/",
     "test":  "openpose_features/test",
     "val":  "openpose_features/validation"}
 
 OPENFACE_PATH = {
     "train": "openface_features/train",
+    "merged": "openface_features/",
     "test": "openface_features/test",
     "val": "openface_features/validation"
 }
