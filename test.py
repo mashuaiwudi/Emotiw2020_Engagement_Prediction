@@ -45,9 +45,9 @@ if __name__ == "__main__":
     average_pred = average_ensemble(pred_au, pred_face, pred_bl)
     wtd_average_pred = wtd_average_ensemble(pred_au, pred_face, pred_bl)
 
-    save_output("{}/avg/".format(test_output_path),
-                test_data.video_name, average_pred)
-    print("Saved average ensemble output")
+    # save_output("{}/avg/".format(test_output_path),
+    #             test_data.video_name, average_pred)
+    # print("Saved average ensemble output")
 
     save_output("{}/wtd_avg/".format(test_output_path),
                 test_data.video_name, wtd_average_pred)
