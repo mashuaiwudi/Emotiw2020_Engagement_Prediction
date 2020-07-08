@@ -4,17 +4,17 @@ This is our submission in the "Eighth Emotion Recognition in the Wild (EmotiW)""
 # Creating virtual env and installing libraries
 
 If virtualenv is not installed
-'''bash
+```bash
 python3 -m pip install --user virtualenv
-'''
+```
 
 ## Once the virtualenv library gets installed, run the following command to create and activate virtual
-'''bash
+```bash
 virtualenv venv
 source venv/bin/activate
-'''
+```
 
 ## Installing dependencies
-'''bash
+```bash
 pip3 install -r requirements.txt
-'''
+```
