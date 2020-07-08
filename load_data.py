@@ -45,8 +45,6 @@ def read_openpose_features(video_name, data_type, required_feat):
         video_feature_src,
         delimiter=","
     )
-    openpose_feat = openpose_feat[300:-700]
-
     openpose_feat = openpose_feat[required_feat]
     selected_openpose_feat = openpose_feat.to_numpy()
     final_feat = utils.get_moment_param([selected_openpose_feat])
