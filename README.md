@@ -92,7 +92,7 @@ python3 validate.py --model_path <path_of_pre_trained_model>
 python3 validate.py --model_path pre_trained_models/original_models
 ```
 
-#### Since our Merged+Balanced dataset uses validation dataset as well for training, running validation on the val_files.csv does not make any sense since the model will be over-fitted in that case. We chose our best performing models trained on original training dataset and their performance on validation dataset as the benchmark for picking models to be re-trained with extra data.
+##### Since our Merged+Balanced dataset uses validation dataset as well for training, running validation on the val_files.csv does not make any sense since the model will be over-fitted in that case. We chose our best performing models trained on original training dataset and their performance on validation dataset as the benchmark for picking models to be re-trained with new partially merged dataset.
 
 ## How to generate test results?
 To generate txt files containingn prediction of engagement intensity for video, run  
