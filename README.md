@@ -7,7 +7,7 @@ We used the weighted average ensemble of three different modalities: facial Acti
 virtualenv venv
 source venv/bin/activate
 pip3 install -r requirements.txt
-python3 test.py --model_path pre_trained_models/balanced_models/ --output_path predicted_engagement
+python3 test.py --model_path pre_trained_models/balanced_models --output_path predicted_engagement
 ```
 The folder predicted_engagement will contain the txt of predicted engagement value on test dataset.
 
@@ -108,5 +108,5 @@ python3 test.py --model_path <folder_path_containing_models> --output_path <resu
 
 **(Examples):**
 ```bash
-python3 test.py --model_path pre_trained_models/balanced_models/ --output_path predicted_engagement
+python3 test.py --model_path pre_trained_models/balanced_models --output_path predicted_engagement
 ```
